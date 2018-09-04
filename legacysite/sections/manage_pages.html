@@ -1,0 +1,79 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Status</th>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">URL</th>
+      <th scope="col">Related Modules</th>
+      <th scope="col"># Components</th>
+      <th scope="col"># Tests</th>
+      <th scope="col">Last Tested</th>
+      <th scope="col">Actions</th>	<!-- View Components, Test Reports, Test Plan Download -->
+    </tr>
+  </thead>
+  <tbody>
+<!--     <tr>
+      <td>[Indicator Icon]</td>
+      <td>Page Name 1</td>
+      <td>Lorem Ipsum Dolor Sit Amet...</td>
+      <td>http://www.tvpage.com/</td>
+      <td>Module 1, Module 2, Module 3</td>
+      <td>5</td>
+      <td>8</td>
+      <td>09/01/2018 03:34:56 PST</td>
+      <td>Edit Page / Delete Page / View Components / View Test Reports / Download Test Plan</td>
+    </tr>
+    <tr>
+      <td>[Indicator Icon]</td>
+      <td>Page Name 2</td>
+      <td>Lorem Ipsum Dolor Sit Amet...</td>
+      <td>http://www.tvpage.com/</td>
+      <td>Module 1, Module 2, Module 3</td>
+      <td>5</td>
+      <td>8</td>
+      <td>09/01/2018 03:34:56 PST</td>
+      <td>Edit Page / Delete Page / View Components / View Test Reports / Download Test Plan</td>
+    </tr>
+    <tr>
+      <td>[Indicator Icon]</td>
+      <td>Page Name 3</td>
+      <td>Lorem Ipsum Dolor Sit Amet...</td>
+      <td>http://www.tvpage.com/</td>
+      <td>Module 1, Module 2, Module 3</td>
+      <td>5</td>
+      <td>8</td>
+      <td>09/01/2018 03:34:56 PST</td>
+      <td>Edit Page / Delete Page / View Components / View Test Reports / Download Test Plan</td>
+    </tr> -->
+  </tbody>
+  <script type="text/javascript">
+    $(document).ready( function() {
+        function mapPagesDataToTable(page_data) {
+            var tableBodyData = [];
+            page_data.map(page_data_item => {
+                var tableRowData = {
+                  "status": "green", //TODO: update schema to include status indicator in data model
+                  "name": module_data_item.displayName,
+                  "description": module_data_item.description,
+                  "num_tests": 42, //TODO: add method to retrieve num tests from backend endpoint
+                  "num_pages": module_data_item.pages.length,
+                  "last_tested": "09/01/2018 03:34:56 PST"
+                 }
+                 tableBodyData.push(tableRowData);
+            });
+            return tableBodyData;
+        }
+        //TODO: Move webhost out into configuration file
+        //TODO: Perform data validation
+        //TODO: Handle Case where we need to get all pages rather than just for module
+        var module_name = window.location.href.split(".")[1];
+        doGETObjectData("http://localhost:3000/getPagesForModule/" + module_name).then(page_data => {
+            // const module_table_data = mapModuleDataToTable(module_data);  
+            // const module_actions = getModuleActions();
+            // const tableBodyMarkup = buildTableBodyMarkup(module_table_data, module_actions);
+            // $("#module_mgmt_tbl tbody").html(tableBodyMarkup);
+        });
+    });
+  </script>
+</table>

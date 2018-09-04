@@ -1,0 +1,74 @@
+<table id="module_mgmt_tbl" class="table">
+  <thead>
+    <tr>
+      <th scope="col">Status</th>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Tests</th>
+      <th scope="col">Pages</th>
+      <th scope="col">Last Tested</th>
+      <th scope="col">Actions</th>	<!-- View Pages, Test Reports, Test Plan -->
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<script type="text/javascript">
+  function mapModuleDataToTable(module_data) {
+      var tableBodyData = [];
+      module_data.map(module_data_item => {
+          var tableRowData = {
+            "status": "green", //TODO: update schema to include status indicator in data model
+            "name": module_data_item.displayName,
+            "description": module_data_item.description,
+            "num_tests": 42, //TODO: add method to retrieve num tests from backend endpoint
+            "num_pages": module_data_item.pages.length,
+            "last_tested": "09/01/2018 03:34:56 PST"
+           }
+           tableBodyData.push(tableRowData);
+      });
+      return tableBodyData;
+  }
+
+  function getModuleActions(moduleName) {
+    actions = {
+      'edit': '<a href="#">Edit Module</a>',
+      'delete': '<a href="#">Delete Module</a>',
+      'view_pages': '<a onclick="viewPageAction(\''+moduleName+'\')" href="#">View Pages</a>', 
+      'view_reports': '<a href="#">View Test Reports</a>',
+      'download_csv': '<a onclick="downloadModuleTestPlan(\''+moduleName+'\')" href="#">Download Test Plan</a>'
+    }
+    return actions;
+  }
+
+  function viewPageAction(moduleName) {
+      loadManagePagesPage("#content-container", "pages."+moduleName);
+  }
+
+  function downloadModuleTestPlan(moduleName) {
+      //TODO: Move webhost out into configuration file
+      //TODO: Perform data validation
+      var payload = { module_name: moduleName }; 
+      doPOSTObject("http://localhost:3000/generateCSVForModule", payload).then((downloaded_filepath) => {
+          downloaded_filepath = downloaded_filepath.substring(1, downloaded_filepath.length -1);
+          window.location = "http://localhost:3000/downloadFile/" + encodeURIComponent(downloaded_filepath);
+      })
+  }
+
+  $(document).ready( function() {
+      //TODO: Move webhost out into configuration file
+      //TODO: Perform data validation
+      doGETObjectData("http://localhost:3000/getAllModules").then(module_data => {
+          const module_table_data = mapModuleDataToTable(module_data);  
+          var tableBodyMarkup = "";
+          for(var i=0; i<module_data.length; i++) {
+            const table_data_item = module_table_data[i];
+            const module_short_name = module_data[i].module;
+            const module_actions = getModuleActions(module_short_name);
+            const tableRowMarkup = buildTableRowMarkup(table_data_item, module_actions);
+            tableBodyMarkup += tableRowMarkup;
+          }
+          $("#module_mgmt_tbl tbody").html(tableBodyMarkup);
+      });
+  });
+</script>

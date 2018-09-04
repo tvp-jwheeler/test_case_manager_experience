@@ -1,0 +1,76 @@
+<html>
+	<head>
+		<title>TVP Test Case Manager Experience</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	</head>
+	<body>
+		<header id="navbar"></header>
+		<div id="content-container" class="content container-fluid"></div>
+
+
+		<!-------- Include Bootstrap 4 ----------->
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+		<script src="js/util.js"></script>
+
+		<!-------- Page Navigation Control Logic ---------->
+		<script type="text/javascript">
+			function loadManageModulesPage(selector) {
+				$(selector).load("sections/manage_modules.html");
+				window.location.hash = "modules"; 
+			}
+
+			function loadManagePagesPage(selector, hash) {
+				$(selector).load("sections/manage_pages.html", function() {
+					if(!hash) {
+						window.location.hash = "pages"; 
+					} else {
+						window.location.hash = hash; 
+					}
+				});		
+			}
+
+			function loadManageComponentsPage(selector) {
+				$(selector).load("sections/manage_components.html");
+				window.location.hash = "components"; 
+			}
+
+			function loadManageTestsPage(selector) {
+				$(selector).load("sections/manage_tests.html");
+				window.location.hash = "tests"; 
+			}
+
+			function loadNavigationSection(selector) {
+				$(selector).load("sections/navigation.html", function() {
+					//Attach Navigation Listeners After Navigation Section Loaded
+					$(".view_modules_nav_item").click(function(e) {
+						e.preventDefault();
+						loadManageModulesPage("#content-container");
+					});		
+
+					$(".view_pages_nav_item").click(function(e) {
+						e.preventDefault();
+						loadManagePagesPage("#content-container");
+					});		
+
+					$(".view_components_nav_item").click(function(e) {
+						e.preventDefault();
+						loadManageComponentsPage("#content-container");
+					});	
+
+					$(".view_tests_nav_item").click(function(e) {
+						e.preventDefault();
+						loadManageTestsPage("#content-container");
+					});	
+				});
+			}
+
+			$(document).ready( function() {
+			    loadNavigationSection("header#navbar");
+			    loadManageModulesPage("#content-container");					    
+			});
+		</script>
+
+	</body>
+</html>
