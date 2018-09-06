@@ -54,7 +54,7 @@
             page_data.map(page_data_item => {
                 var tableRowData = {
                   "status": "green", //TODO: update schema to include status indicator in data model
-                  "name": module_data_item.displayName,
+                  "name": page_data_item.displayName,
                   "description": module_data_item.description,
                   "num_tests": 42, //TODO: add method to retrieve num tests from backend endpoint
                   "num_pages": module_data_item.pages.length,
